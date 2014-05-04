@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.licenses      = "MIT"
   
   s.add_dependency 'inifile', '~> 2.0'
+  s.add_dependency 'nokogiri', '~> 1.6'
   
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
