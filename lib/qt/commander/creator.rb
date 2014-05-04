@@ -37,16 +37,21 @@ module Qt::Commander::Creator
     def update_toolchains
       @toolchains = File.read File.join @config_dir, 'toolchains.xml'
       @toolchains = parse_qt_xml(@toolchains).map do |_, info|
-        if info.is_a? Hash
-          {
-            name:       info["ProjectExplorer.ToolChain.DisplayName"],
-            id:         info["ProjectExplorer.ToolChain.Id"],
-            autodetect: info["ProjectExplorer.ToolChain.Autodetect"],
-            path:       info["ProjectExplorer.GccToolChain.Path"],
-            supported:  info["ProjectExplorer.GccToolChain.SupportedAbis"],
-            target:     info["ProjectExplorer.GccToolChain.TargetAbi"],
+        {}.tap { |h|
+          %w[
+            name                   ProjectExplorer.ToolChain.DisplayName
+            id                     ProjectExplorer.ToolChain.Id
+            autodetect             ProjectExplorer.ToolChain.Autodetect
+            path                   ProjectExplorer.GccToolChain.Path
+            supported              ProjectExplorer.GccToolChain.SupportedAbis
+            target                 ProjectExplorer.GccToolChain.TargetAbi
+            
+            android_ndk_tc_version Qt4ProjectManager.Android.NDK_TC_VERION
+            
+          ].each_slice(2).each { |key, oldkey|
+            h[key.to_sym] = info[oldkey] if info.key? oldkey
           }
-        end
+        } if info.is_a? Hash
       end.compact
     end
     
