@@ -7,6 +7,7 @@ describe Qt::Commander::Creator do
   its(:config_ini) { should be_a String }
   
   its(:ini)        { should be_an IniFile }
+  
   its(:toolchains) { should be_an Array }
   
   its('toolchains.first') { should be_a Hash }
@@ -24,5 +25,14 @@ describe Qt::Commander::Creator do
     subject.toolchains(:generic).should_not be_empty
     subject.toolchains(:generic).last.should eq subject.toolchain(:generic)
   end
+  
+  its(:profiles) { should be_an Array }
+  
+  its('profiles.first') { should be_a Hash }
+  
+  its('profiles.first') {
+    should have_key :toolchain
+    subject.toolchains.should include subject.profiles.first[:toolchain]
+  }
   
 end
