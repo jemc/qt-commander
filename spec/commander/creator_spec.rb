@@ -8,31 +8,32 @@ describe Qt::Commander::Creator do
   
   its(:ini)        { should be_an IniFile }
   
-  its(:toolchains) { should be_an Array }
+  its(:toolchains) {
+    subject.toolchains.each { |x|
+      x.should be_a Qt::Commander::Creator::Toolchain
+    }
+  }
   
-  its('toolchains.first') { should be_a Hash }
+  its(:versions) {
+    subject.versions.each { |x|
+      x.should be_a Qt::Commander::Creator::Version
+    }
+  }
   
-  it "can select toolchains by match" do
-    first = subject.toolchains.first
-    
-    subject.toolchains(first[:name], first[:target]).should eq [first]
-    subject.toolchains(first[:name])                .should eq [first]
-    subject.toolchains(first[:target])              .should eq [first]
-    subject.toolchain(first[:name], first[:target]) .should eq first
-    subject.toolchain(first[:name])                 .should eq first
-    subject.toolchain(first[:target])               .should eq first
-    
-    subject.toolchains(:generic).should_not be_empty
-    subject.toolchains(:generic).last.should eq subject.toolchain(:generic)
-  end
-  
-  its(:profiles) { should be_an Array }
-  
-  its('profiles.first') { should be_a Hash }
-  
-  its('profiles.first') {
-    should have_key :toolchain
-    subject.toolchains.should include subject.profiles.first[:toolchain]
+  its(:profiles) {
+    subject.profiles.each { |x|
+      x.should be_a Qt::Commander::Creator::Profile
+    }
+    subject.profiles.map(&:toolchain).each { |x|
+      subject.toolchains.should include x
+    }
+    subject.profiles.map(&:version).each { |x|
+      subject.versions.should include x
+    }
+    subject.profiles.select(&:android?).each { |x|
+      x.toolchain.should be_android
+      x.toolchain.android_ndk_tc_version.should be
+    }
   }
   
 end
