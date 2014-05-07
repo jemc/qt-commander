@@ -95,7 +95,7 @@ module Qt::Commander::Creator
     end
   end
   
-  self.config_dir = File.join Dir.home, ".config/QtProject/qtcreator"
   self.config_ini = File.join Dir.home, ".config/QtProject/QtCreator.ini"
+  self.config_dir = File.join Dir.home, ".config/QtProject/qtcreator"
   
 end
