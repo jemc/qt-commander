@@ -1,8 +1,8 @@
 
 Gem::Specification.new do |s|
   s.name          = 'qt-commander'
-  s.version       = '0.0.1'
-  s.date          = '2014-05-04'
+  s.version       = '0.1.0'
+  s.date          = '2014-05-06'
   s.summary       = 'qt-commander'
   s.description   = "A Ruby utility for building and management of "\
                     "Qt Creator projects."
